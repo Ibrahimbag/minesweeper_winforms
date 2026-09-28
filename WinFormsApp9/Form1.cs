@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Diagnostics;
 
 namespace WinFormsApp9
@@ -40,37 +41,58 @@ namespace WinFormsApp9
         {
             init_minefield();
 
-            int y = 200;
+            int y = 100;
             int count = 0;
 
             for (int i = 0; i < height; i++)
             {
-                int x = 300;
+                int x = 150;
                 for (int j = 0; j < width; j++)
                 {
                     Button btn = new Button();
                     btn.Name = "" + count;
                     btn.Text = "";
                     btn.Location = new Point(x, y);
-                    btn.Size = new Size(20, 20);
+                    btn.Size = new Size(50, 50);
                     btn.Click += Button_Click;
                     Controls.Add(btn);
-                    x = x + 20;
+                    x = x + 50;
                     count++;
                 }
-                y += 20;
+                y += 50;
             }
+        }
+
+        private int Count_Surrounding_Mines(int index, int row, int col)
+        {
+            int count = 0;
+
+            for (int i = row - 1; i <= row + 1; i++)
+            {
+                for (int j = col - 1; j <= col + 1; j++)
+                {
+                    if (i >= 0 && i < height && j >= 0 && j < width)
+                    {
+                        if (minefield[i, j] == true)
+                        {
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            return count;
         }
 
         private void Button_Click(object sender, EventArgs e)
         {
             Button tiklananButton = (Button)sender;
+
             int index = int.Parse(tiklananButton.Name);
-
             int row = index / width;
-            int column = index % width;
+            int col = index % width;
 
-            if (minefield[row, column] == true)
+            if (minefield[row, col] == true)
             {
                 tiklananButton.BackColor = Color.Red;
                 MessageBox.Show("Mayýna bastýnýz");
@@ -78,6 +100,8 @@ namespace WinFormsApp9
             else
             {
                 tiklananButton.BackColor = Color.Green;
+                int count = Count_Surrounding_Mines(index, row, col);
+                tiklananButton.Text = count.ToString();
             }
         }
     }
