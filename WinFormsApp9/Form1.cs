@@ -92,10 +92,12 @@ namespace WinFormsApp9
             int row = index / width;
             int col = index % width;
 
+            Image image = Image.FromFile("../../../assets/mine.png");
+
             if (minefield[row, col] == true)
             {
                 tiklananButton.BackColor = Color.Red;
-                MessageBox.Show("Mayýna bastýnýz");
+                tiklananButton.Image = image;
             }
             else
             {
