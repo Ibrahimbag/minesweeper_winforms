@@ -15,7 +15,7 @@ namespace WinFormsApp9
 
         bool[,] minefield; 
 
-        private void init_minefield()
+        private void Init_Minefield()
         {
             Random random = new Random();
 
@@ -39,7 +39,7 @@ namespace WinFormsApp9
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            init_minefield();
+            Init_Minefield();
 
             int y = 100;
             int count = 0;
