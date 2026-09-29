@@ -1,5 +1,6 @@
 using System.Data.Common;
 using System.Diagnostics;
+using System.Windows.Forms; // Ensure this is present for Timer
 
 namespace WinFormsApp9
 {
@@ -12,15 +13,17 @@ namespace WinFormsApp9
 
         int height = 5, width = 10;
         int mine_count = 10;
-
+        private List<Point> flaggedTiles = new();
         bool[,] minefield;
+
+        // --- NEW VARIABLES FOR TIMER ---
+        private System.Windows.Forms.Timer gameTimer;
+        private int secondsPassed = 0;
 
         private void Init_Minefield()
         {
             Random random = new Random();
-
             minefield = new bool[height, width];
-
             int mineCountPlaced = 0;
 
             while (mineCountPlaced < mine_count)
@@ -34,12 +37,18 @@ namespace WinFormsApp9
                     mineCountPlaced++;
                 }
             }
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             Init_Minefield();
+
+            // --- SETUP AND START THE TIMER ---
+            TimeLabel.Text = "000"; // Initial display
+            gameTimer = new System.Windows.Forms.Timer();
+            gameTimer.Interval = 1000; // 1000 milliseconds = 1 second
+            gameTimer.Tick += GameTimer_Tick;
+            gameTimer.Start();
 
             int y = 100;
             int count = 0;
@@ -61,6 +70,21 @@ namespace WinFormsApp9
                 }
                 y += 50;
             }
+        }
+
+        // --- NEW TICK EVENT HANDLER ---
+        private void GameTimer_Tick(object sender, EventArgs e)
+        {
+            secondsPassed++;
+
+            // Keeps it capped at 999 max just like classic Minesweeper
+            if (secondsPassed > 999)
+            {
+                secondsPassed = 999;
+                gameTimer.Stop();
+            }
+
+            TimeLabel.Text = $"{secondsPassed:D3}";
         }
 
         private int Count_Surrounding_Mines(int index, int row, int col)
@@ -87,8 +111,6 @@ namespace WinFormsApp9
         Image mine_image = Image.FromFile("../../../assets/mine.png");
         Image flag_image = Image.FromFile("../../../assets/flag.png");
 
-        private List<Point> flaggedTiles = new();
-
         private void Button_Click(object sender, MouseEventArgs e)
         {
             Button tiklananButton = (Button)sender;
@@ -107,6 +129,9 @@ namespace WinFormsApp9
                 {
                     tiklananButton.BackColor = Color.Red;
                     tiklananButton.Image = mine_image;
+
+                    // --- STOP TIMER ON GAME OVER ---
+                    gameTimer.Stop();
                 }
                 else
                 {
@@ -138,6 +163,16 @@ namespace WinFormsApp9
                         tiklananButton.ForeColor = colors[count - 1];
                     }
                 }
+            }
+
+            int minesLeft = mine_count - flaggedTiles.Count;
+            if (minesLeft >= 0)
+            {
+                minesLeftLabel.Text = $"{minesLeft:D3}";
+            }
+            else
+            {
+                minesLeftLabel.Text = $"{minesLeft:D2}";
             }
         }
 
