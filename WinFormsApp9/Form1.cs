@@ -57,6 +57,7 @@ namespace WinFormsApp9
                     btn.Location = new Point(x, y);
                     btn.Size = new Size(50, 50);
                     btn.MouseDown += Button_Click;
+                    btn.Tag = "Dynamic";
                     Controls.Add(btn);
                     x = x + 50;
                     count++;
@@ -202,7 +203,34 @@ namespace WinFormsApp9
 
         private void SmileyButton_Click(object sender, EventArgs e)
         {
-            // TODO
+            gameTimer.Stop();
+            secondsPassed = 0;
+            DeleteTaggedButtons(this);
+            game_started = false;
+            TimeLabel.Text = "000";
+            minesLeftLabel.Text = "000";
+            flaggedTiles.Clear();
+            Form1_Load(sender, e);
         }
+
+        private void DeleteTaggedButtons(Control container)
+        {
+            for (int i = container.Controls.Count - 1; i >= 0; i--)
+            {
+                Control ctrl = container.Controls[i];
+
+                // Only delete it if it is a button marked with our Tag
+                if (ctrl is Button && ctrl.Tag?.ToString() == "Dynamic")
+                {
+                    container.Controls.RemoveAt(i);
+                    ctrl.Dispose();
+                }
+                else if (ctrl.HasChildren)
+                {
+                    DeleteTaggedButtons(ctrl);
+                }
+            }
+        }
+
     }
 }
