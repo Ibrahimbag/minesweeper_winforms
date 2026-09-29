@@ -13,7 +13,7 @@ namespace WinFormsApp9
         int height = 5, width = 10;
         int mine_count = 10;
 
-        bool[,] minefield; 
+        bool[,] minefield;
 
         private void Init_Minefield()
         {
@@ -54,7 +54,7 @@ namespace WinFormsApp9
                     btn.Text = "";
                     btn.Location = new Point(x, y);
                     btn.Size = new Size(50, 50);
-                    btn.Click += Button_Click;
+                    btn.MouseDown += Button_Click;
                     Controls.Add(btn);
                     x = x + 50;
                     count++;
@@ -84,7 +84,12 @@ namespace WinFormsApp9
             return count;
         }
 
-        private void Button_Click(object sender, EventArgs e)
+        Image mine_image = Image.FromFile("../../../assets/mine.png");
+        Image flag_image = Image.FromFile("../../../assets/flag.png");
+
+        private List<Point> flaggedTiles = new();
+
+        private void Button_Click(object sender, MouseEventArgs e)
         {
             Button tiklananButton = (Button)sender;
 
@@ -92,18 +97,42 @@ namespace WinFormsApp9
             int row = index / width;
             int col = index % width;
 
-            Image image = Image.FromFile("../../../assets/mine.png");
-
-            if (minefield[row, col] == true)
+            if (e.Button == MouseButtons.Right)
             {
-                tiklananButton.BackColor = Color.Red;
-                tiklananButton.Image = image;
+                Flag_Tile(tiklananButton, row, col);
+            }
+            else if (e.Button == MouseButtons.Left && !flaggedTiles.Contains(new Point(col, row)))
+            {
+                if (minefield[row, col] == true)
+                {
+                    tiklananButton.BackColor = Color.Red;
+                    tiklananButton.Image = mine_image;
+                }
+                else
+                {
+                    tiklananButton.BackColor = Color.Green;
+                    int count = Count_Surrounding_Mines(index, row, col);
+                    tiklananButton.Text = count.ToString();
+                }
+            }
+        }
+
+        private void Flag_Tile(Button tiklananButton, int row, int col)
+        {
+            if (tiklananButton.Text != "" || minefield[row, col] == true)
+            {
+                return;
+            }
+
+            if (flaggedTiles.Contains(new Point(col, row)))
+            {
+                flaggedTiles.Remove(new Point(col, row));
+                tiklananButton.Image = null;
             }
             else
             {
-                tiklananButton.BackColor = Color.Green;
-                int count = Count_Surrounding_Mines(index, row, col);
-                tiklananButton.Text = count.ToString();
+                flaggedTiles.Add(new Point(col, row));
+                tiklananButton.Image = flag_image;
             }
         }
     }
