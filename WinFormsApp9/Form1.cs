@@ -43,13 +43,6 @@ namespace WinFormsApp9
         {
             Init_Minefield();
 
-            // --- SETUP AND START THE TIMER ---
-            TimeLabel.Text = "000"; // Initial display
-            gameTimer = new System.Windows.Forms.Timer();
-            gameTimer.Interval = 1000; // 1000 milliseconds = 1 second
-            gameTimer.Tick += GameTimer_Tick;
-            gameTimer.Start();
-
             int y = 100;
             int count = 0;
 
@@ -110,9 +103,21 @@ namespace WinFormsApp9
 
         Image mine_image = Image.FromFile("../../../assets/mine.png");
         Image flag_image = Image.FromFile("../../../assets/flag.png");
+        bool game_started = false; 
 
         private void Button_Click(object sender, MouseEventArgs e)
         {
+            if (!game_started)
+            {
+                // --- SETUP AND START THE TIMER ---
+                TimeLabel.Text = "000"; // Initial display
+                gameTimer = new System.Windows.Forms.Timer();
+                gameTimer.Interval = 1000; // 1000 milliseconds = 1 second
+                gameTimer.Tick += GameTimer_Tick;
+                gameTimer.Start();
+                game_started = true;
+            }
+
             Button tiklananButton = (Button)sender;
 
             int index = int.Parse(tiklananButton.Name);
@@ -193,6 +198,11 @@ namespace WinFormsApp9
                 flaggedTiles.Add(new Point(col, row));
                 tiklananButton.Image = flag_image;
             }
+        }
+
+        private void SmileyButton_Click(object sender, EventArgs e)
+        {
+            // TODO
         }
     }
 }

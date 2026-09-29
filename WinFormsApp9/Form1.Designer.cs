@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             minesLeftLabel = new Label();
-            smiley = new Button();
+            SmileyButton = new Button();
             TimeLabel = new Label();
             SuspendLayout();
             // 
@@ -46,14 +46,15 @@
             minesLeftLabel.TabIndex = 0;
             minesLeftLabel.Text = "000";
             // 
-            // smiley
+            // SmileyButton
             // 
-            smiley.Image = (Image)resources.GetObject("smiley.Image");
-            smiley.Location = new Point(369, 15);
-            smiley.Name = "smiley";
-            smiley.Size = new Size(57, 57);
-            smiley.TabIndex = 2;
-            smiley.UseVisualStyleBackColor = true;
+            SmileyButton.Image = (Image)resources.GetObject("SmileyButton.Image");
+            SmileyButton.Location = new Point(369, 15);
+            SmileyButton.Name = "SmileyButton";
+            SmileyButton.Size = new Size(57, 57);
+            SmileyButton.TabIndex = 2;
+            SmileyButton.UseVisualStyleBackColor = true;
+            SmileyButton.Click += SmileyButton_Click;
             // 
             // TimeLabel
             // 
@@ -73,7 +74,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(TimeLabel);
-            Controls.Add(smiley);
+            Controls.Add(SmileyButton);
             Controls.Add(minesLeftLabel);
             Name = "Form1";
             Text = "Form1";
@@ -85,7 +86,7 @@
         #endregion
 
         private Label minesLeftLabel;
-        private Button smiley;
+        private Button SmileyButton;
         private Label TimeLabel;
     }
 }
