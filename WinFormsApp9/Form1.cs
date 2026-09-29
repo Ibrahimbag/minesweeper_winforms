@@ -143,7 +143,7 @@ namespace WinFormsApp9
 
         private void Flag_Tile(Button tiklananButton, int row, int col)
         {
-            if (tiklananButton.Text != "" || minefield[row, col] == true)
+            if (tiklananButton.Text != "" || tiklananButton.Image == mine_image)
             {
                 return;
             }
