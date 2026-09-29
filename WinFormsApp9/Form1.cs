@@ -110,9 +110,33 @@ namespace WinFormsApp9
                 }
                 else
                 {
-                    tiklananButton.BackColor = Color.Green;
+                    Color[] colors =
+                    [
+                        Color.Blue,
+                        Color.Green,
+                        Color.Red,
+                        Color.Magenta,
+                        Color.DarkRed,
+                        Color.Teal,
+                        Color.Black,
+                        Color.Gray,
+                    ];
+
                     int count = Count_Surrounding_Mines(index, row, col);
+
                     tiklananButton.Text = count.ToString();
+                    tiklananButton.Font = new Font(tiklananButton.Font.FontFamily, 20.0f, tiklananButton.Font.Style);
+                    tiklananButton.BackColor = Color.LightGray;
+
+                    if (count == 0)
+                    {
+                        tiklananButton.ForeColor = tiklananButton.BackColor;
+                    }
+
+                    if (count > 0)
+                    {
+                        tiklananButton.ForeColor = colors[count - 1];
+                    }
                 }
             }
         }
