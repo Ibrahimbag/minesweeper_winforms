@@ -12,7 +12,7 @@ namespace WinFormsApp9
             InitializeComponent();
         }
 
-        int height = 5, width = 10;
+        int height = 9, width = 9;
         int mine_count = 10;
         private List<Point> flaggedTiles = new();
         bool[,] minefield;
@@ -48,27 +48,33 @@ namespace WinFormsApp9
 
         private void Add_Buttons()
         {
-            int y = 100;
+            int y = (ClientSize.Height - height * 24) / 2;
+
+            if (y < 100)
+            {
+                y = 100;
+            }
+
             int count = 0;
 
             for (int i = 0; i < height; i++)
             {
-                int x = 150;
+                int x = (ClientSize.Width - width * 24) / 2;
                 for (int j = 0; j < width; j++)
                 {
                     Button btn = new Button();
                     btn.Name = "" + count;
                     btn.Text = "";
                     btn.Location = new Point(x, y);
-                    btn.Size = new Size(50, 50);
+                    btn.Size = new Size(24, 24);
                     btn.MouseDown += Button_Click;
                     btn.MouseCaptureChanged += Button_Capture;
                     btn.Tag = "Dynamic";
                     Controls.Add(btn);
-                    x = x + 50;
+                    x = x + 24;
                     count++;
                 }
-                y += 50;
+                y += 24;
             }
         }
 
@@ -177,7 +183,7 @@ namespace WinFormsApp9
                     int count = Count_Surrounding_Mines(index, row, col);
 
                     tiklananButton.Text = count.ToString();
-                    tiklananButton.Font = new Font(tiklananButton.Font.FontFamily, 20.0f, tiklananButton.Font.Style);
+                    tiklananButton.Font = new Font(tiklananButton.Font.FontFamily, 9.0f, tiklananButton.Font.Style);
                     tiklananButton.BackColor = Color.LightGray;
 
                     if (count == 0)
