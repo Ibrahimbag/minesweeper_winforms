@@ -52,9 +52,9 @@
             // SmileyButton
             // 
             SmileyButton.Image = (Image)resources.GetObject("SmileyButton.Image");
-            SmileyButton.Location = new Point(369, 28);
+            SmileyButton.Location = new Point(367, 17);
             SmileyButton.Name = "SmileyButton";
-            SmileyButton.Size = new Size(57, 57);
+            SmileyButton.Size = new Size(63, 61);
             SmileyButton.TabIndex = 2;
             SmileyButton.UseVisualStyleBackColor = true;
             SmileyButton.Click += SmileyButton_Click;
