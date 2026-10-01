@@ -1,5 +1,6 @@
 using System.Data.Common;
 using System.Diagnostics;
+using System.Numerics;
 using System.Windows.Forms; // Ensure this is present for Timer
 
 namespace WinFormsApp9
@@ -42,7 +43,11 @@ namespace WinFormsApp9
         private void Form1_Load(object sender, EventArgs e)
         {
             Init_Minefield();
+            Add_Buttons();
+        }
 
+        private void Add_Buttons()
+        {
             int y = 100;
             int count = 0;
 
@@ -227,6 +232,11 @@ namespace WinFormsApp9
 
         private void SmileyButton_Click(object sender, EventArgs e)
         {
+            Restart_Game(sender, e);
+        }
+
+        private void Restart_Game(object sender, EventArgs e)
+        {
             gameTimer.Stop();
             secondsPassed = 0;
             DeleteTaggedButtons(this);
@@ -256,6 +266,32 @@ namespace WinFormsApp9
                     DeleteTaggedButtons(ctrl);
                 }
             }
+        }
+
+        private void btnDifficulty_MouseClick(object sender, MouseEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+
+            if (clickedButton.Name == "btnEasy")
+            {
+                height = 9;
+                width = 9;
+                mine_count = 10;
+            }
+            else if (clickedButton.Name == "btnMedium")
+            {
+                height = 16;
+                width = 16;
+                mine_count = 40;
+            }
+            else if (clickedButton.Name == "btnHard")
+            {
+                height = 16;
+                width = 30;
+                mine_count = 99;
+            }
+
+            Restart_Game(sender, e);
         }
     }
 }
