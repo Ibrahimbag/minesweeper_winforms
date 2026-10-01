@@ -57,6 +57,7 @@ namespace WinFormsApp9
                     btn.Location = new Point(x, y);
                     btn.Size = new Size(50, 50);
                     btn.MouseDown += Button_Click;
+                    btn.MouseCaptureChanged += Button_Capture;
                     btn.Tag = "Dynamic";
                     Controls.Add(btn);
                     x = x + 50;
@@ -104,10 +105,19 @@ namespace WinFormsApp9
 
         Image mine_image = Image.FromFile("../../../assets/mine.png");
         Image flag_image = Image.FromFile("../../../assets/flag.png");
-        bool game_started = false; 
+        Image smiley1_image = Image.FromFile("../../../assets/smiley1.png");
+        Image smiley2_image = Image.FromFile("../../../assets/smiley2.png");
+        Image smiley3_image = Image.FromFile("../../../assets/smiley3.png");
+        bool game_started = false;
+        bool game_over = false;
 
         private void Button_Click(object sender, MouseEventArgs e)
         {
+            if (game_over)
+            {
+                return;
+            }
+
             if (!game_started)
             {
                 // --- SETUP AND START THE TIMER ---
@@ -120,6 +130,8 @@ namespace WinFormsApp9
             }
 
             Button tiklananButton = (Button)sender;
+
+            SmileyButton.Image = smiley2_image;
 
             int index = int.Parse(tiklananButton.Name);
             int row = index / width;
@@ -135,6 +147,10 @@ namespace WinFormsApp9
                 {
                     tiklananButton.BackColor = Color.Red;
                     tiklananButton.Image = mine_image;
+
+                    SmileyButton.Image = smiley3_image;
+
+                    game_over = true;
 
                     // --- STOP TIMER ON GAME OVER ---
                     gameTimer.Stop();
@@ -182,6 +198,14 @@ namespace WinFormsApp9
             }
         }
 
+        private void Button_Capture(object sender, EventArgs e)
+        {
+            if (!game_over)
+            {
+                SmileyButton.Image = smiley1_image;
+            }
+        }
+
         private void Flag_Tile(Button tiklananButton, int row, int col)
         {
             if (tiklananButton.Text != "" || tiklananButton.Image == mine_image)
@@ -207,8 +231,10 @@ namespace WinFormsApp9
             secondsPassed = 0;
             DeleteTaggedButtons(this);
             game_started = false;
+            game_over = false;
             TimeLabel.Text = "000";
             minesLeftLabel.Text = "000";
+            SmileyButton.Image = smiley1_image;
             flaggedTiles.Clear();
             Form1_Load(sender, e);
         }
@@ -231,6 +257,5 @@ namespace WinFormsApp9
                 }
             }
         }
-
     }
 }
