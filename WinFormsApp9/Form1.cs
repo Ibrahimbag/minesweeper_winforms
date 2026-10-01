@@ -248,7 +248,11 @@ namespace WinFormsApp9
 
         private void Restart_Game(object sender, EventArgs e)
         {
-            gameTimer.Stop();
+            if (game_started)
+            {
+                gameTimer.Stop();
+            }
+
             secondsPassed = 0;
             DeleteTaggedButtons(this);
             game_started = false;
@@ -257,6 +261,7 @@ namespace WinFormsApp9
             minesLeftLabel.Text = "000";
             SmileyButton.Image = smiley1_image;
             flaggedTiles.Clear();
+
             Form1_Load(sender, e);
         }
 
