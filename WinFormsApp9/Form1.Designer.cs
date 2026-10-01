@@ -35,6 +35,13 @@
             btnEasy = new Button();
             btnMedium = new Button();
             btnHard = new Button();
+            btnCustom = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            txtY = new TextBox();
+            txtX = new TextBox();
+            txtMinesCount = new TextBox();
             SuspendLayout();
             // 
             // minesLeftLabel
@@ -52,7 +59,7 @@
             // SmileyButton
             // 
             SmileyButton.Image = (Image)resources.GetObject("SmileyButton.Image");
-            SmileyButton.Location = new Point(367, 17);
+            SmileyButton.Location = new Point(371, 17);
             SmileyButton.Name = "SmileyButton";
             SmileyButton.Size = new Size(63, 61);
             SmileyButton.TabIndex = 2;
@@ -101,11 +108,76 @@
             btnHard.UseVisualStyleBackColor = true;
             btnHard.MouseClick += btnDifficulty_MouseClick;
             // 
+            // btnCustom
+            // 
+            btnCustom.Location = new Point(203, 2);
+            btnCustom.Name = "btnCustom";
+            btnCustom.Size = new Size(61, 23);
+            btnCustom.TabIndex = 7;
+            btnCustom.Text = "Custom";
+            btnCustom.UseVisualStyleBackColor = true;
+            btnCustom.MouseClick += btnDifficulty_MouseClick;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(568, 8);
+            label1.Name = "label1";
+            label1.Size = new Size(17, 15);
+            label1.TabIndex = 8;
+            label1.Text = "Y:";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(643, 8);
+            label2.Name = "label2";
+            label2.Size = new Size(17, 15);
+            label2.TabIndex = 9;
+            label2.Text = "X:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(717, 8);
+            label3.Name = "label3";
+            label3.Size = new Size(42, 15);
+            label3.TabIndex = 10;
+            label3.Text = "Mines:";
+            // 
+            // txtY
+            // 
+            txtY.Location = new Point(591, 2);
+            txtY.Name = "txtY";
+            txtY.Size = new Size(28, 23);
+            txtY.TabIndex = 11;
+            // 
+            // txtX
+            // 
+            txtX.Location = new Point(666, 2);
+            txtX.Name = "txtX";
+            txtX.Size = new Size(28, 23);
+            txtX.TabIndex = 12;
+            // 
+            // txtMinesCount
+            // 
+            txtMinesCount.Location = new Point(765, 2);
+            txtMinesCount.Name = "txtMinesCount";
+            txtMinesCount.Size = new Size(28, 23);
+            txtMinesCount.TabIndex = 13;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 500);
+            Controls.Add(txtMinesCount);
+            Controls.Add(txtX);
+            Controls.Add(txtY);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(btnCustom);
             Controls.Add(btnHard);
             Controls.Add(btnMedium);
             Controls.Add(btnEasy);
@@ -127,5 +199,12 @@
         private Button btnEasy;
         private Button btnMedium;
         private Button btnHard;
+        private Button btnCustom;
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private TextBox txtY;
+        private TextBox txtX;
+        private TextBox txtMinesCount;
     }
 }

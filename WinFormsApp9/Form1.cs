@@ -43,6 +43,11 @@ namespace WinFormsApp9
         private void Form1_Load(object sender, EventArgs e)
         {
             Init_Minefield();
+
+            txtY.Text = height.ToString();
+            txtX.Text = width.ToString();
+            txtMinesCount.Text = mine_count.ToString();
+
             Add_Buttons();
         }
 
@@ -295,6 +300,12 @@ namespace WinFormsApp9
                 height = 16;
                 width = 30;
                 mine_count = 99;
+            }
+            else
+            {
+                height = int.Parse(txtY.Text);
+                width = int.Parse(txtX.Text);
+                mine_count = int.Parse(txtMinesCount.Text);
             }
 
             Restart_Game(sender, e);
