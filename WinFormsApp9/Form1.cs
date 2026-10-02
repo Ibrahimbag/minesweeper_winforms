@@ -145,24 +145,24 @@ namespace WinFormsApp9
                 game_started = true;
             }
 
-            Button tiklananButton = (Button)sender;
+            Button clickedButton = (Button)sender;
 
             SmileyButton.Image = smiley2_image;
 
-            int index = int.Parse(tiklananButton.Name);
+            int index = int.Parse(clickedButton.Name);
             int row = index / width;
             int col = index % width;
 
             if (e.Button == MouseButtons.Right)
             {
-                Flag_Tile(tiklananButton, row, col);
+                Flag_Tile(clickedButton, row, col);
             }
             else if (e.Button == MouseButtons.Left && !flaggedTiles.Contains(new Point(col, row)))
             {
                 if (minefield[row, col] == true)
                 {
-                    tiklananButton.BackColor = Color.Red;
-                    tiklananButton.Image = mine_image;
+                    clickedButton.BackColor = Color.Red;
+                    clickedButton.Image = mine_image;
 
                     SmileyButton.Image = smiley3_image;
 
@@ -187,18 +187,18 @@ namespace WinFormsApp9
 
                     int count = Count_Surrounding_Mines(index, row, col);
 
-                    tiklananButton.Text = count.ToString();
-                    tiklananButton.Font = new Font(tiklananButton.Font.FontFamily, 9.0f, tiklananButton.Font.Style);
-                    tiklananButton.BackColor = Color.LightGray;
+                    clickedButton.Text = count.ToString();
+                    clickedButton.Font = new Font(clickedButton.Font.FontFamily, 9.0f, clickedButton.Font.Style);
+                    clickedButton.BackColor = Color.LightGray;
 
                     if (count == 0)
                     {
-                        tiklananButton.ForeColor = tiklananButton.BackColor;
+                        clickedButton.ForeColor = clickedButton.BackColor;
                     }
 
                     if (count > 0)
                     {
-                        tiklananButton.ForeColor = colors[count - 1];
+                        clickedButton.ForeColor = colors[count - 1];
                     }
                 }
             }
@@ -222,9 +222,9 @@ namespace WinFormsApp9
             }
         }
 
-        private void Flag_Tile(Button tiklananButton, int row, int col)
+        private void Flag_Tile(Button clickedButton, int row, int col)
         {
-            if (tiklananButton.Text != "" || tiklananButton.Image == mine_image)
+            if (clickedButton.Text != "" || clickedButton.Image == mine_image)
             {
                 return;
             }
@@ -232,12 +232,12 @@ namespace WinFormsApp9
             if (flaggedTiles.Contains(new Point(col, row)))
             {
                 flaggedTiles.Remove(new Point(col, row));
-                tiklananButton.Image = null;
+                clickedButton.Image = null;
             }
             else
             {
                 flaggedTiles.Add(new Point(col, row));
-                tiklananButton.Image = flag_image;
+                clickedButton.Image = flag_image;
             }
         }
 
