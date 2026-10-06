@@ -15,6 +15,17 @@ namespace WinFormsApp9
         int height = 9, width = 9;
         int mine_count = 10;
         private List<Point> flaggedTiles = new();
+        private static readonly Color[] numberColors =
+        [
+            Color.Blue,
+            Color.Green,
+            Color.Red,
+            Color.Magenta,
+            Color.DarkRed,
+            Color.Teal,
+            Color.Black,
+            Color.Gray,
+        ];
         bool[,] minefield;
 
         private int secondsPassed = 0;
@@ -118,6 +129,21 @@ namespace WinFormsApp9
             return count;
         }
 
+        private int Reveal_Tile(Button button, int row, int col)
+        {
+            int index = row * width + col;
+            int surrounding_mine_count = Count_Surrounding_Mines(index, row, col);
+
+            button.Text = surrounding_mine_count.ToString();
+            button.Font = new Font(button.Font.FontFamily, 9.0f, button.Font.Style);
+            button.BackColor = Color.LightGray;
+            button.ForeColor = surrounding_mine_count == 0
+                ? button.BackColor
+                : numberColors[surrounding_mine_count - 1];
+
+            return surrounding_mine_count;
+        }
+
         Image mine_image = Image.FromFile("../../../assets/mine.png");
         Image flag_image = Image.FromFile("../../../assets/flag.png");
         Image smiley1_image = Image.FromFile("../../../assets/smiley1.png");
@@ -165,33 +191,8 @@ namespace WinFormsApp9
                 }
                 else
                 {
-                    Color[] colors =
-                    [
-                        Color.Blue,
-                        Color.Green,
-                        Color.Red,
-                        Color.Magenta,
-                        Color.DarkRed,
-                        Color.Teal,
-                        Color.Black,
-                        Color.Gray,
-                    ];
-
-                    int count = Count_Surrounding_Mines(index, row, col);
-
-                    clickedButton.Text = count.ToString();
-                    clickedButton.Font = new Font(clickedButton.Font.FontFamily, 9.0f, clickedButton.Font.Style);
-                    clickedButton.BackColor = Color.LightGray;
-
-                    if (count == 0)
-                    {
-                        clickedButton.ForeColor = clickedButton.BackColor;
-                    }
-
-                    if (count > 0)
-                    {
-                        clickedButton.ForeColor = colors[count - 1];
-                    }
+                    int surrounding_mine_count = Reveal_Tile(clickedButton, row, col);
+                    RevealEmptyNeighborTiles(row, col, surrounding_mine_count);
                 }
             }
 
@@ -203,6 +204,40 @@ namespace WinFormsApp9
             else
             {
                 minesLeftLabel.Text = $"{minesLeft:D2}";
+            }
+        }
+
+        private void RevealEmptyNeighborTiles(int row, int col, int surrounding_mine_count)
+        {
+            if (surrounding_mine_count != 0)
+            {
+                return;
+            }
+
+            for (int i = row - 1; i < row + 2; i++)
+            {
+                for (int j = col - 1; j < col + 2; j++)
+                {
+                    if (i < 0 || j < 0 || i >= height || j >= width)
+                    {
+                        continue;
+                    }
+
+                    if (minefield[i, j] || flaggedTiles.Contains(new Point(j, i)))
+                    {
+                        continue;
+                    }
+
+                    int index = i * width + j;
+                    Control[] matchingControls = Controls.Find(index.ToString(), false);
+                    if (matchingControls.Length == 0 || matchingControls[0] is not Button neighborButton || neighborButton.Text != "")
+                    {
+                        continue;
+                    }
+
+                    int neighbor_mine_count = Reveal_Tile(neighborButton, i, j);
+                    RevealEmptyNeighborTiles(i, j, neighbor_mine_count);
+                }
             }
         }
 
