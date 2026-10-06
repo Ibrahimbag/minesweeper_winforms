@@ -17,8 +17,6 @@ namespace WinFormsApp9
         private List<Point> flaggedTiles = new();
         bool[,] minefield;
 
-        // --- NEW VARIABLES FOR TIMER ---
-        private System.Windows.Forms.Timer gameTimer;
         private int secondsPassed = 0;
 
         private void Init_Minefield()
@@ -83,16 +81,17 @@ namespace WinFormsApp9
             }
         }
 
-        // --- NEW TICK EVENT HANDLER ---
         private void GameTimer_Tick(object sender, EventArgs e)
         {
-            secondsPassed++;
+            if (game_started && !game_over)
+            {
+                secondsPassed++;
+            }
 
             // Keeps it capped at 999 max just like classic Minesweeper
             if (secondsPassed > 999)
             {
                 secondsPassed = 999;
-                gameTimer.Stop();
             }
 
             TimeLabel.Text = $"{secondsPassed:D3}";
@@ -138,10 +137,6 @@ namespace WinFormsApp9
             {
                 // --- SETUP AND START THE TIMER ---
                 TimeLabel.Text = "000"; // Initial display
-                gameTimer = new System.Windows.Forms.Timer();
-                gameTimer.Interval = 1000; // 1000 milliseconds = 1 second
-                gameTimer.Tick += GameTimer_Tick;
-                gameTimer.Start();
                 game_started = true;
             }
 
@@ -167,9 +162,6 @@ namespace WinFormsApp9
                     SmileyButton.Image = smiley3_image;
 
                     game_over = true;
-
-                    // --- STOP TIMER ON GAME OVER ---
-                    gameTimer.Stop();
                 }
                 else
                 {
@@ -248,11 +240,6 @@ namespace WinFormsApp9
 
         private void Restart_Game(object sender, EventArgs e)
         {
-            if (game_started)
-            {
-                gameTimer.Stop();
-            }
-
             secondsPassed = 0;
             DeleteTaggedButtons(this);
             game_started = false;

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             minesLeftLabel = new Label();
             SmileyButton = new Button();
@@ -42,6 +43,7 @@
             txtY = new TextBox();
             txtX = new TextBox();
             txtMinesCount = new TextBox();
+            gameTimer = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // minesLeftLabel
@@ -166,6 +168,12 @@
             txtMinesCount.Size = new Size(28, 23);
             txtMinesCount.TabIndex = 13;
             // 
+            // gameTimer
+            // 
+            gameTimer.Enabled = true;
+            gameTimer.Interval = 1000;
+            gameTimer.Tick += GameTimer_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -206,5 +214,6 @@
         private TextBox txtY;
         private TextBox txtX;
         private TextBox txtMinesCount;
+        private System.Windows.Forms.Timer gameTimer;
     }
 }
