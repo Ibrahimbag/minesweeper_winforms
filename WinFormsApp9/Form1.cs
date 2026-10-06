@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Numerics;
@@ -140,12 +141,14 @@ namespace WinFormsApp9
             button.ForeColor = surrounding_mine_count == 0
                 ? button.BackColor
                 : numberColors[surrounding_mine_count - 1];
+            button.Tag = "Opened";
 
             return surrounding_mine_count;
         }
 
         Image mine_image = Image.FromFile("../../../assets/mine.png");
         Image flag_image = Image.FromFile("../../../assets/flag.png");
+        Image smiley_image = Image.FromFile("../../../assets/smiley.png");
         Image smiley1_image = Image.FromFile("../../../assets/smiley1.png");
         Image smiley2_image = Image.FromFile("../../../assets/smiley2.png");
         Image smiley3_image = Image.FromFile("../../../assets/smiley3.png");
@@ -205,6 +208,13 @@ namespace WinFormsApp9
             {
                 minesLeftLabel.Text = $"{minesLeft:D2}";
             }
+
+            // Check if user winned the game
+            if (Check_Win(this))
+            {
+                game_over = !game_over;
+                SmileyButton.Image = smiley_image;
+            }
         }
 
         private void RevealEmptyNeighborTiles(int row, int col, int surrounding_mine_count)
@@ -239,6 +249,32 @@ namespace WinFormsApp9
                     RevealEmptyNeighborTiles(i, j, neighbor_mine_count);
                 }
             }
+        }
+
+        private bool Check_Win(Control container)
+        {
+            // TODO: Count how many buttons with tag "Opened" and determine if game is over
+            int openedCount = 0;
+
+            for (int i = 0; i < container.Controls.Count; i++)
+            {
+                Control ctrl = container.Controls[i];
+
+                bool isTagged = ctrl.Tag?.ToString() == "Opened";
+                if (ctrl is Button && isTagged)
+                {
+                    openedCount++;
+                }
+            }
+
+            int safeTilesCount = height * width - mine_count;
+
+            if (openedCount ==  safeTilesCount)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void Button_Capture(object sender, EventArgs e)
@@ -294,7 +330,8 @@ namespace WinFormsApp9
                 Control ctrl = container.Controls[i];
 
                 // Only delete it if it is a button marked with our Tag
-                if (ctrl is Button && ctrl.Tag?.ToString() == "Dynamic")
+                bool isTagged = ctrl.Tag?.ToString() == "Dynamic" || ctrl.Tag?.ToString() == "Opened";
+                if (ctrl is Button && isTagged)
                 {
                     container.Controls.RemoveAt(i);
                     ctrl.Dispose();
